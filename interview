@@ -1,0 +1,109 @@
+import random
+import time
+
+def display_categories():
+    return [
+        "Algorithms",
+        "Data Structures",
+        "System Design",
+        "Behavioral"
+    ]
+
+def get_questions(category):
+    questions = {
+        "Algorithms": [
+            "Explain the difference between merge sort and quicksort.",
+            "How do you find the shortest path in a graph?",
+            "Implement a binary search algorithm.",
+            "Write a function to reverse a linked list."
+        ],
+        "Data Structures": [
+            "What is the difference between a stack and a queue?",
+            "Explain a hash table and how it handles collisions.",
+            "Design a trie and explain its use case.",
+            "Implement a function to check if a binary tree is balanced."
+        ],
+        "System Design": [
+            "How would you design a URL shortening service?",
+            "Explain how you would scale a chat application.",
+            "Discuss the pros and cons of microservices architecture.",
+            "Design a distributed caching system."
+        ],
+        "Behavioral": [
+            "Tell me about a time you overcame a challenging bug.",
+            "Describe a situation where you had to work in a team to meet a tight deadline.",
+            "How do you prioritize tasks when multiple deadlines are approaching?",
+            "Explain a project where you learned something new under pressure."
+        ]
+    }
+    return questions.get(category, [])
+
+def select_random_question(category):
+    questions = get_questions(category)
+    if questions:
+        return random.choice(questions)
+    return "No questions available for this category."
+
+def start_timer():
+    return time.time()
+
+def stop_timer(start_time):
+    if start_time:
+        return time.time() - start_time
+    return 0
+
+def save_response(response, response_list):
+    if response.strip():
+        response_list.append(response)
+        return "Response saved."
+    return "Please provide a valid response."
+
+def main():
+    responses = []
+    print("Welcome to the Software Engineering Interview Prep Tool!")
+
+    categories = display_categories()
+    print("Available categories:")
+    for i, category in enumerate(categories, start=1):
+        print(f"{i}. {category}")
+
+    try:
+        # Simulate predefined input for testing
+        simulated_inputs = ["1", "This is my sample response.", ""]  # Select Algorithms, give a response, and end timer
+        input_index = 0
+
+        def mock_input(prompt):
+            nonlocal input_index
+            response = simulated_inputs[input_index]
+            input_index += 1
+            print(prompt + response)  # Display the prompt and simulated response
+            return response
+
+        category_index = int(mock_input("Select a category by number: ")) - 1
+
+        if 0 <= category_index < len(categories):
+            selected_category = categories[category_index]
+            print(f"You selected: {selected_category}")
+
+            print("Here are the questions:")
+            for question in get_questions(selected_category):
+                print(f"- {question}")
+
+            random_question = select_random_question(selected_category)
+            print(f"Random Question: {random_question}")
+
+            response = mock_input("Type your response: ")
+            print(save_response(response, responses))
+
+            print("Starting a timer. Press Enter to stop it.")
+            start_time = start_timer()
+            mock_input("Press Enter to stop the timer: ")
+            elapsed_time = stop_timer(start_time)
+            print(f"You spent {elapsed_time:.2f} seconds.")
+        else:
+            print("Invalid category selection.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
